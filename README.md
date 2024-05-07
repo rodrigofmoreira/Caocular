@@ -1,4 +1,4 @@
-# DrinkCalculator
-Calculadora para evitar ressaca
+# Caocular
+Calculadora para dizer a idade do seu cão
 
 ## Calculadora
