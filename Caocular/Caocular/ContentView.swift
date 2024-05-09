@@ -12,33 +12,56 @@ struct ContentView: View {
     @State var years: Int? = nil
     @State var months: Int? = nil
     @State var result: Int?
+    let portes = ["Pequeno", "Médio", "Grande"]
+    @State var porte: String = "Pequeno"
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 20.0) {
             
             Text("Qual a idade do seu cão?")
                 .font(.system(size: 24))
+                .foregroundStyle(.purple)
             
-            Text("Anos")
-            TextField(
-                "Quantos anos completos seu cão tem",
-                value: $years,
-                format: .number
-            )
-           
-            Text("Meses")
-            TextField(
-                "Quantos meses além disso ele tem",
-                value: $months,
-                format: .number
-            )
+            VStack (alignment: .leading, spacing: 8.0) {
+                Text("Anos")
+                    .foregroundStyle(.purple)
+                TextField(
+                    "Quantos anos completos seu cão tem",
+                    value: $years,
+                    format: .number
+                )
+            }
             
-            Text("Porte")
-            //segmented control
+            VStack (alignment: .leading, spacing: 8.0) {
+                Text("Meses")
+                    .foregroundStyle(.purple)
+                TextField(
+                    "Quantos meses além disso ele tem",
+                    value: $months,
+                    format: .number
+                )
+            }
+
+            VStack (alignment: .leading, spacing: 8.0) {
+                Text("Porte")
+                    .foregroundStyle(.purple)
+                Picker ("Porte", selection: $porte) {
+                    ForEach(portes, id: \.self) { porte in
+                        Text(porte)
+                            .tag(porte)
+                    }
+                } .pickerStyle(.segmented)
+            }
+            
+            Spacer()
+            
             
             if let result {
                 Text("Seu cachorro tem, em idade humana...")
+                    .foregroundStyle(.purple)
                 Text("\(result) anos")
+                    .foregroundStyle(.purple)
+                    .font(.system(size: 60))
             } else {
                 Image(ImageResource.clarinha)
                     .resizable()
@@ -47,11 +70,11 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity)
             }
             
-            Button(action: {
-                result = 23
-            }, label: {
+            Spacer()
+            
+            Button(action: processYears, label: {
                 ZStack {
-                    Color.blue
+                    Color.purple
                     Text("Cãocular")
                         .foregroundStyle(.white)
                 }
@@ -64,6 +87,18 @@ struct ContentView: View {
         .bold()
         .fontDesign(.rounded)
         .padding()
+    }
+    
+    func processYears() {
+        guard let years, let months else {
+            print("Preencha o campo de entrada")
+            return
+        }
+        guard years > 0 || months > 0 else {
+            print("Algum campo tem que ter valor maior que zero")
+            return
+        }
+        result = years * 7 + months*7/12
     }
 }
 
